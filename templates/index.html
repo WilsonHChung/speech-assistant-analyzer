@@ -22,11 +22,11 @@
 
             <!--Using jinja, if transcript does not empty, show me h1 Speech to text -->
             <!--Otherwise, dont show me Speech To Text -->
-            {% if transcript != " " %}
+            {% if record != " " %}
 
             <div id="speechTranscriptContainer">
                 <h1> Speech to Text</h1>
-                <p>{{transcript}}</p>
+                <p>{{record}}</p>
             </div>
             {% endif %}
         

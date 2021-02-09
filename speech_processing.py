@@ -6,7 +6,7 @@ import threading
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import pandas as pd
 
-authenticator = IAMAuthenticator('')
+authenticator = IAMAuthenticator('ukQ17BPHEoBP0tBYovtuQn_Dlb5dfH4waoA5Zpy_w8aO')
 service = SpeechToTextV1(authenticator=authenticator)
 service.set_service_url('https://stream.watsonplatform.net/speech-to-text/api')
 
@@ -25,7 +25,7 @@ with open(join(dirname(__file__), 'hesitation.wav'),
     output = service.recognize(
             audio=audio_file,
             content_type='audio/wav').get_result()
-    print(json.dumps(output, indent=2))
+    # print(json.dumps(output, indent=2))
 
 # filters the JSON dump to print out only the transcript 
 
