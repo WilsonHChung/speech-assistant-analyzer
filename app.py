@@ -12,7 +12,7 @@ app = Flask(__name__)
 # the home page now can upload and post function
 @app.route("/", methods=["GET", "POST"])
 def record():
-    authenticator = IAMAuthenticator('ukQ17BPHEoBP0tBYovtuQn_Dlb5dfH4waoA5Zpy_w8aO')
+    authenticator = IAMAuthenticator('')
     service = SpeechToTextV1(authenticator=authenticator)
     service.set_service_url('https://stream.watsonplatform.net/speech-to-text/api')
 
