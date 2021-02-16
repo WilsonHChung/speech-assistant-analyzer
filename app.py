@@ -7,12 +7,18 @@ import threading
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import pandas as pd
 
+# from flask_bootstrap import Bootstrap
+
+
 app = Flask(__name__)
+
+# bootstrap = Bootstrap(app)
+
 
 # the home page now can upload and post function
 @app.route("/", methods=["GET", "POST"])
 def record():
-    authenticator = IAMAuthenticator('')
+    authenticator = IAMAuthenticator('ukQ17BPHEoBP0tBYovtuQn_Dlb5dfH4waoA5Zpy_w8aO')
     service = SpeechToTextV1(authenticator=authenticator)
     service.set_service_url('https://stream.watsonplatform.net/speech-to-text/api')
 
@@ -38,7 +44,7 @@ def record():
         except IndexError:
             index_limit = True
             break
-    return render_template('record.html',record = record)
+    return render_template('base.html',record = record)
 
 # def index():
 #     #transcript is empty as initialize
