@@ -2,7 +2,7 @@
 FROM python:3.8
 
 # set the working directory in the container
-WORKDIR /code
+WORKDIR /app
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
@@ -13,5 +13,5 @@ RUN pip install -r requirements.txt
 # copy the content of the local src directory to the working directory
 COPY src/ .
 
-# command to run on container start
-CMD python ./server.py
+# setup command to run the flask script whenever the container is running 
+CMD ["flask", "run", "--host", "0.0.0.0"]
