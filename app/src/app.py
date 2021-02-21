@@ -45,12 +45,12 @@ def connect_to_db(hostname, port):
 @app.route("/", methods=["GET", "POST"])
 def record():
 
-    cnx = connect_to_db(sql_hostname, sql_port)
-    cursor = cnx.cursor()
+    # cnx = connect_to_db(sql_hostname, sql_port)
+    # cursor = cnx.cursor()
 
-    cursor.execute("SHOW tables")
-    cursor.execute("CREATE TABLE SPEECH_DETECTION (the_date DATE)")
-    cnx.commit()
+    # cursor.execute("SHOW tables")
+    # cursor.execute("CREATE TABLE SPEECH_DETECTION (the_date DATE)")
+    # cnx.commit()
 
     authenticator = IAMAuthenticator('')
     service = SpeechToTextV1(authenticator=authenticator)
