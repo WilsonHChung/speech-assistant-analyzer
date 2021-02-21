@@ -5,13 +5,53 @@ from ibm_watson import SpeechToTextV1
 from ibm_watson.websocket import RecognizeCallback, AudioSource
 import threading
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+import mysql.connector
+from mysql.connector import errorcode
+from flaskext.mysql import MySQL
+
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+sql_hostname = "localhost"
+sql_port = 3306
+
+def connect_to_db(hostname, port):
+    connected = False
+    
+    # MySQL configurations
+    app.config['MYSQL_DATABASE_USER'] = "root"
+    app.config['MYSQL_DATABASE_PASSWORD'] = "password"
+    app.config['MYSQL_DATABASE_DB'] = "mysql"
+    app.config['MYSQL_DATABASE_HOST'] = "localhost"
+    app.config['MYSQL_DATABASE_PORT'] = 3306
+   
+    mysql = MySQL()
+    mysql.init_app(app)
+    try:
+        conn = mysql.connect()
+        connected  = True
+    except Exception as ex:
+        print(ex)
+        return None
+
+    if connected:
+        return conn
+
+    return None
 
 
 # the home page now can upload and post function
 @app.route("/", methods=["GET", "POST"])
 def record():
+
+    cnx = connect_to_db(sql_hostname, sql_port)
+    cursor = cnx.cursor()
+
+    cursor.execute("SHOW tables")
+    cursor.execute("CREATE TABLE SPEECH_DETECTION (the_date DATE)")
+    cnx.commit()
+
     authenticator = IAMAuthenticator('')
     service = SpeechToTextV1(authenticator=authenticator)
     service.set_service_url('https://stream.watsonplatform.net/speech-to-text/api')

@@ -6,7 +6,6 @@ services:
     command: '--default-authentication-plugin=mysql_native_password'
     restart: always
     environment:
-      - MYSQL_DATABASE=root
       - MYSQL_ROOT_PASSWORD=password
     ports:
         - '3306:3306'
@@ -17,8 +16,11 @@ services:
   app:
     build: app
     restart: always
+    links:
+      - db
     ports: 
         - "5000:5000"
+      
     
 
     
