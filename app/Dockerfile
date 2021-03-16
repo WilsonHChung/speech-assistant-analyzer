@@ -1,6 +1,8 @@
 # set base image (host OS)
 FROM python:3.8
 
+EXPOSE 5000
+
 # set the working directory in the container
 WORKDIR /app
 

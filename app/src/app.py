@@ -22,8 +22,8 @@ def connect_to_db(hostname, port):
     # MySQL configurations
     app.config['MYSQL_DATABASE_USER'] = "root"
     app.config['MYSQL_DATABASE_PASSWORD'] = "password"
-    app.config['MYSQL_DATABASE_DB'] = "mysql"
-    app.config['MYSQL_DATABASE_HOST'] = "localhost"
+    app.config['MYSQL_DATABASE_DB'] = "speech_app"
+    app.config['MYSQL_DATABASE_HOST'] = "db"
     app.config['MYSQL_DATABASE_PORT'] = 3306
    
     mysql = MySQL()
@@ -45,14 +45,14 @@ def connect_to_db(hostname, port):
 @app.route("/", methods=["GET", "POST"])
 def record():
 
-    # cnx = connect_to_db(sql_hostname, sql_port)
-    # cursor = cnx.cursor()
+    cnx = connect_to_db(sql_hostname, sql_port)
+    cursor = cnx.cursor()
 
-    # cursor.execute("SHOW tables")
-    # cursor.execute("CREATE TABLE SPEECH_DETECTION (the_date DATE)")
-    # cnx.commit()
+    cursor.execute("SHOW tables")
+    cursor.execute("CREATE TABLE hello (the_date DATE)")
+    cnx.commit()
 
-    authenticator = IAMAuthenticator('')
+    authenticator = IAMAuthenticator('AeWcu0gUgQQwm8PKD7knwKGXxVYuqYp9kRb9qH96-ZBs')
     service = SpeechToTextV1(authenticator=authenticator)
     service.set_service_url('https://stream.watsonplatform.net/speech-to-text/api')
 
