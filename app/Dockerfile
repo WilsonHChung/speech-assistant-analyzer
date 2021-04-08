@@ -17,3 +17,4 @@ COPY src/ .
 
 # setup command to run the flask script whenever the container is running 
 CMD ["flask", "run", "--host", "0.0.0.0"]
+

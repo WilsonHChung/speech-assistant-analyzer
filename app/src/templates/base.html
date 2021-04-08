@@ -2,6 +2,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
@@ -16,10 +18,10 @@
                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
 		</li>
 		<li class="nav-item">
-		    <a class="nav-link" href="#">History</a>
+		    <a class="nav-link" href="#">Analytics</a>
 		</li>
 		<li class="nav-item">
-		    <a class="nav-link" href="#">Account</a>
+		    <a class="nav-link" href="#">Guide</a>
 		</li>
         </ul>
         </div>
@@ -30,18 +32,33 @@
 
 
         <div id="speechTranscriptContainer">
-            <p id="text">{{record}}</p>
+            <h2><b><center><p id="text">{{record}}</p></center></b></h2>
         </div>
 
         
-        <button onclick="search()">Show filler words</button>
-        
-        <h4> Audio file upload </h4> 
+        <button onclick="hesitation_markers()">Show filler words</button>
 
-        <div class="custom-file">
+        <p style="width:400px;"></p>
+        
+        <!-- <h4> Audio file upload </h4>  -->
+        
+
+        <!-- <div class="custom-file">
             <input type="file" class="custom-file-input" id="customFile">
-            <label class="custom-file-label" for="customFile">Choose file</label>
-          </div>
+            <label class="custom-file-label" for="customFile">Upload an audio file here</label>
+        </div> -->
+
+
+        <html>
+        <body>
+            <form action = "http://localhost:5000" method = "POST" enctype = "multipart/form-data">
+                <input type = "file" name = "file" />
+                <input type = "submit" value = "Submit" />
+            </form>
+        </body>
+        </html>
+  
+        
 
         {% endif %}
     
@@ -67,16 +84,92 @@
         color: black;
     }
 
+    h2 {
+        font-size: 20px;
+        padding-bottom: 200px;
+        line-height: 2;
+    }
+
 </style>
 
 <script type="text/javascript">
 
-    function search() {
+    function hesitation_markers() {
         
         let text = document.getElementById("text").innerHTML;
         let newText = text.replaceAll("%HESITATION", "<mark>%HESITATION</mark>");
         document.getElementById("text").innerHTML = newText;
     }
+
+    // function undo_hesitation_markers() {
+
+    // }
+
+
+    // when the browse and submit button is clicked then attempt to send back data to flask
+    // $('#exampleFakeBrowseFile1, #exampleFakeFile1').on('click', function() {
+    //   $('#exampleFile1').trigger("click");
+    // //   $.ajax({
+    // //             type: "POST",
+    // //             url : "/",
+    // //             traditional: "true",
+    // //             dataType: "json",
+    // //             data: JSON.stringify({file_name, toggle})
+
+    // //         });
+    // });
+    // $('#exampleFile1').change(function() {
+    //     var file_name = this.value.replace(/\\/g, '/').replace(/.*\//, '');
+        
+    //     var toggle = "file";
+    //     $('#exampleFakeFile1').val(file_name);
+
+    // });
+
+    // $(function() {
+    //     $('#upload-file-btn').click(function() {
+    //         var form_data = new FormData($('#upload-file')[0]);
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: '/',
+    //             data: form_data,
+    //             contentType: false,
+    //             cache: false,
+    //             processData: false,
+    //             success: function(data) {
+    //                 console.log('Success!');
+    //             },
+    //         });
+    //     });
+    // });
+
+    // $(function() {
+    //     $('#submit').click(function() {
+    //         location.reload()
+    //         $("#text").text("XDXDXD");
+    //         // $.ajax({
+    //         //     type: 'POST',
+    //         //     url: '/',
+    //         //     data: form_data,
+    //         //     contentType: false,
+    //         //     cache: false,
+    //         //     processData: false,
+    //         //     success: function(data) {
+    //         //         console.log('Success!');
+    //         //     },
+    //         // });
+    //     });
+    // });
+
+
+    // $.ajax({
+    //             type: "POST",
+    //             url : "/?exampleFile1=hesitation.wav",
+    //             traditional: "true",
+    //             dataType: "json",
+    //             data: JSON.stringify({file_name, toggle})
+
+    //         });
 
 
 </script>

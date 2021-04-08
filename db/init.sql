@@ -19,3 +19,5 @@ CREATE TABLE speech_to_text (
   stutter_word varchar(100),
   hesitation_id int
 );
+
+
