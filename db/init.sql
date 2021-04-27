@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS speech_app;
 CREATE DATABASE speech_app;
 use speech_app;
 
@@ -10,9 +11,10 @@ CREATE TABLE user (
 CREATE TABLE speech (
   speech_id int,
   file_name varchar(100),
-  time_of_speech int,
-  hesitations int,
-  language varchar(100)
+  transcript varchar(1000)
+  -- time_of_speech int,
+  -- hesitations int,
+  -- language varchar(100)
 );
 
 CREATE TABLE speech_to_text (
