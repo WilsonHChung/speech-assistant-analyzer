@@ -23,6 +23,7 @@ sql_port = 3306
 file_name = ""
 audio_file = ""
 
+speech_id = 1
 
 def connect_to_db(hostname, port):
     connected = False
@@ -80,7 +81,7 @@ def connect_to_db(hostname, port):
 
 def generate_transcript(file_name):
 
-    authenticator = IAMAuthenticator('')
+    authenticator = IAMAuthenticator('AeWcu0gUgQQwm8PKD7knwKGXxVYuqYp9kRb9qH96-ZBs')
     service = SpeechToTextV1(authenticator=authenticator)
     service.set_service_url('https://stream.watsonplatform.net/speech-to-text/api')
 
@@ -115,7 +116,7 @@ def generate_transcript(file_name):
 # the home page now can upload and post function
 @app.route("/", methods=["GET", "POST"])
 def record():
-
+    global speech_id
     global file_name
     global audio_file
     toggle = "0"
@@ -146,6 +147,20 @@ def record():
 
     if ".wav" in audio_file:
         display_transcript = generate_transcript(audio_file)
+        cnx = connect_to_db(sql_hostname, sql_port)
+        cursor = cnx.cursor()
+
+        insert_stmt = (
+            "INSERT INTO speech(speech_id, file_name, transcript)"
+            "VALUES (%s, %s, %s)"
+        )
+        data = (speech_id, audio_file, display_transcript)
+        cursor.execute(insert_stmt, data)
+        # cursor.execute("INSERT INTO speech(speech_id, file_name, transcript) VALUES(1, 'hello.wav', 'Hello World')")
+        # cursor.execute("INSERT INTO speech(speech_id, file_name, transcript) VALUES({0}, '{1}', '{2}')".format(1, file_name, display_transcript))
+        cnx.commit()
+
+        speech_id += 1
         file_name = ""
         audio_file = ""
 
