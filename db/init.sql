@@ -11,7 +11,10 @@ CREATE TABLE user (
 CREATE TABLE speech (
   speech_id int,
   file_name varchar(100),
-  transcript varchar(1000)
+  transcript varchar(1000),
+  total_number_of_words int,
+  total_number_of_hesitations int,
+  accuracy float
   -- time_of_speech int,
   -- hesitations int,
   -- language varchar(100)
