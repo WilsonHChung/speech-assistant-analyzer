@@ -151,10 +151,13 @@ def record():
         cursor = cnx.cursor()
 
         insert_stmt = (
-            "INSERT INTO speech(speech_id, file_name, transcript)"
-            "VALUES (%s, %s, %s)"
+            "INSERT INTO speech(speech_id, file_name, transcript, total_number_of_words, total_number_of_hesitations, accuracy)"
+            "VALUES (%s, %s, %s, %s, %s, %s)"
         )
-        data = (speech_id, audio_file, display_transcript)
+        word_list = display_transcript.split()
+        number_of_words = len(word_list)
+        number_of_hesitations = display_transcript.count('%HESITATION')
+        data = (speech_id, audio_file, display_transcript, number_of_words, number_of_hesitations, (100 - ((number_of_hesitations / number_of_words) * 100)))
         cursor.execute(insert_stmt, data)
         # cursor.execute("INSERT INTO speech(speech_id, file_name, transcript) VALUES(1, 'hello.wav', 'Hello World')")
         # cursor.execute("INSERT INTO speech(speech_id, file_name, transcript) VALUES({0}, '{1}', '{2}')".format(1, file_name, display_transcript))
