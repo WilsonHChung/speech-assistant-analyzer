@@ -14,7 +14,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">Speech Assistant</a>
+              <a class="navbar-brand" href="#">Speech Assistant Analyzer</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -30,13 +30,13 @@
                   {% else  %}
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Action
+                      Practice
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="{{ url_for('speech') }}">Speech To Text</a></li>
-                      <li><a class="dropdown-item" href="{{ url_for('file_upload') }}">Upload a sound file</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('speech') }}">Record your speech</a></li>
+                      <li><a class="dropdown-item" href="{{ url_for('file_upload') }}">Upload an audio file</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Data Analytics</a></li>
+                      <li><a class="dropdown-item" href="#">Your analytics</a></li>
                     </ul>
                   </li>
                   <li class="nav-item">
@@ -46,14 +46,14 @@
                     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                 </li>
                   {% endif %}
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Developing</a>
-                  </li>
+                  </li> -->
                 </ul>
-                <form class="d-flex">
+                <!-- <form class="d-flex">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </form> -->
               </div>
             </div>
         </nav>

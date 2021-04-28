@@ -1,7 +1,7 @@
 {% extends "base.html" %}
     {% block content %}
-        <h1>Hello, {{ current_user.username }}!</h1>
+        <h1><center>Hello, {{ current_user.username }}!</center></h1>
         {% for s in speech %}
-        <div><p>{{ s.author.username }} says: <b>{{ s.body}}</b></p></div>
+        <div><p><center>{{ s.author.username }} says: <b>{{ s.body}}</center></b></p></div>
         {% endfor %}
     {% endblock %}
