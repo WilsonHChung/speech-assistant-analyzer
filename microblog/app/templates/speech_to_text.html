@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+    <section>
+        <h2>Speech to Text</h2>
+        <button class="btn btn-primary" id="button">Start Microphone Transcription</button>
+        <button class="btn btn-outline-danger" id="stop">Stop</button>
+
+        <h2>Output:</h2>
+        <samp id="output">--</samp>
+    </section>
+    <script src="../static/watson-speech.js"></script>
+
+    <script>
+    document.querySelector('#button').onclick = function() {
+    fetch("{{ url_for('token')}}")
+        .then(function(response) {
+        return response.json();
+        })
+        .then(function(token) {
+        var stream = WatsonSpeech.SpeechToText.recognizeMicrophone(Object.assign(token, { // eslint-disable-line
+            outputElement: '#output', // CSS selector or DOM Element
+            format: false // This is to turn off smart_formatting 
+        }));
+
+        stream.on('error', function(err) {
+            console.log(err);
+        });
+
+        document.querySelector('#stop').onclick = function() {
+            stream.stop();
+        };
+        })
+        .catch(function(error) {
+        console.log(error);
+        });
+    };
+    </script>
+{% endblock %}

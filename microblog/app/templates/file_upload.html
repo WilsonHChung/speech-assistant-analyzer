@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+    <h2>Upload file and translate to text</h2>
+    <div class="container-md">
+      <label for="formFile" class="form-label">Upload sound file</label>
+      <input class="form-control" type="file" id="audiofile"> 
+      <button class="btn btn-primary" id="button">Transcribe and Play</button> 
+      <button class="btn btn-outline-danger" id="stop">Stop and Save Data</button>
+    </div>
+    
+  <p><small><i>
+    Supported types include .wav, .mp3, .ogg, .opus, .flac, and .webm.
+    Playback also requires browser support; we recommend .opus for most cases.
+    (<a href="https://console.bluemix.net/docs/services/speech-to-text/input.html#formats">Additional formats</a> can be supported if the content-type is specified manually).
+  </i></small></p>
+
+    <h2>Output:</h2>
+    <samp id="output">--</samp>
+</section>
+
+<script src="../static/watson-speech.js"></script>
+<pre><code><script>
+
+var stream;
+document.querySelector('#button').onclick = function () {
+
+  fetch("{{ url_for('token') }} ").then(function(response) {
+    return response.json();
+  }).then(function (token) {
+
+    stream = WatsonSpeech.SpeechToText.recognizeFile(Object.assign(token, {
+      file: document.querySelector('#audiofile').files[0],
+      play: true, // play the audio out loud
+      outputElement: '#output', // CSS selector or DOM Element (optional)
+      format: false // Turn off smart_formatting for Hesitation marker
+    }));
+
+    stream.on('error', function(err) {
+        console.log(err);
+    });
+
+  }).catch(function(error) {
+      console.log(error);
+  });
+};
+
+document.querySelector('#stop').onclick = function() {
+    if (stream) {
+        stream.stop();
+    }
+};
+</script></code></pre>
+{% endblock %}
