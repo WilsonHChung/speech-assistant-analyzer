@@ -19,8 +19,9 @@
     <samp id="output">--</samp>
 </section>
 
-<script src="../static/watson-speech.js"></script>
 <pre><code><script>
+  
+
 
 var stream;
 document.querySelector('#button').onclick = function () {
@@ -49,6 +50,22 @@ document.querySelector('#stop').onclick = function() {
     if (stream) {
         stream.stop();
     }
+
+    var file_name = "hesitation.wav"
+    var transcript = ""
+
+    $.ajax({
+      type: "POST",
+      url : "/file_upload",
+      traditional: "true",
+      dataType: "json",
+      data: JSON.stringify({file_name, transcript})
+    });
+
 };
+
+
+
+
 </script></code></pre>
 {% endblock %}

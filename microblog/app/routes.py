@@ -6,6 +6,8 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app.models import User
 from datetime import datetime
+import json
+
 
 @app.route('/')
 @app.route('/index')
@@ -59,6 +61,14 @@ def speech():
 @app.route('/file_upload', methods=['POST', 'GET'])
 @login_required
 def file_upload():
+
+    if request.method == 'POST':
+        data = request.get_data()
+        data = json.loads(data)
+        file_name = data["file_name"]
+        transcript = data["transcript"]
+        print(file_name, transcript)
+
     return render_template('file_upload.html')
 
 @app.route('/logout')
