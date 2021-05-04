@@ -32,6 +32,19 @@
 
         document.querySelector('#stop').onclick = function() {
             stream.stop();
+            
+            let text = document.getElementById("output").innerHTML;
+            var file_name = "NA"
+            var transcript = text
+            var method = "Live"
+
+            $.ajax({
+              type: "POST",
+              url : "/speech",
+              traditional: "true",
+              dataType: "json",
+              data: JSON.stringify({file_name, transcript, method})
+            });
         };
         })
         .catch(function(error) {

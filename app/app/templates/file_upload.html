@@ -21,8 +21,6 @@
 
 <pre><code><script>
   
-
-
 var stream;
 document.querySelector('#button').onclick = function () {
 
@@ -49,18 +47,20 @@ document.querySelector('#button').onclick = function () {
 document.querySelector('#stop').onclick = function() {
     if (stream) {
         stream.stop();
+
+        let text = document.getElementById("output").innerHTML;
+        var file_name = document.getElementById("audiofile").value.replace(/^.*\\/, "");
+        var transcript = text;
+        var method = "Upload";
+
+        $.ajax({
+          type: "POST",
+          url : "/file_upload",
+          traditional: "true",
+          dataType: "json",
+          data: JSON.stringify({file_name, transcript, method})
+        });
     }
-
-    var file_name = "hesitation.wav"
-    var transcript = ""
-
-    $.ajax({
-      type: "POST",
-      url : "/file_upload",
-      traditional: "true",
-      dataType: "json",
-      data: JSON.stringify({file_name, transcript})
-    });
 
 };
 

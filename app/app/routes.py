@@ -1,3 +1,4 @@
+import json
 from flask import render_template, flash, redirect, url_for, jsonify, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm
@@ -6,8 +7,43 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app.models import User
 from datetime import datetime
-import json
+import mysql.connector
+from mysql.connector import errorcode
+from flaskext.mysql import MySQL
 
+# app = Flask(__name__)
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# app.config['IMAGE_UPLOADS'] = '/'
+
+sql_hostname = "localhost"
+sql_port = 3306
+
+file_name = ""
+speech_id = 1
+
+def connect_to_db(hostname, port):
+    connected = False
+    
+    # MySQL configurations
+    app.config['MYSQL_DATABASE_USER'] = "root"
+    app.config['MYSQL_DATABASE_PASSWORD'] = "password"
+    app.config['MYSQL_DATABASE_DB'] = "speech_app"
+    app.config['MYSQL_DATABASE_HOST'] = "db"
+    app.config['MYSQL_DATABASE_PORT'] = 3306
+   
+    mysql = MySQL()
+    mysql.init_app(app)
+    try:
+        conn = mysql.connect()
+        connected  = True
+    except Exception as ex:
+        print(ex)
+        return None
+
+    if connected:
+        return conn
+
+    return None
 
 @app.route('/')
 @app.route('/index')
@@ -56,18 +92,76 @@ def token():
 @app.route('/speech', methods=['POST', 'GET'])
 @login_required
 def speech():
-    return render_template('speech_to_text.html')
 
-@app.route('/file_upload', methods=['POST', 'GET'])
-@login_required
-def file_upload():
+    global speech_id
+    global file_name
 
     if request.method == 'POST':
         data = request.get_data()
         data = json.loads(data)
         file_name = data["file_name"]
         transcript = data["transcript"]
-        print(file_name, transcript)
+        method = data["method"]
+        print("File name:", file_name)
+        print("Transcript:", transcript)
+        print("Method:", method)
+
+        cnx = connect_to_db(sql_hostname, sql_port)
+        cursor = cnx.cursor()
+
+        insert_stmt = (
+            "INSERT INTO speech(speech_id, file_name, transcript, total_number_of_words, total_number_of_hesitations, accuracy)"
+            "VALUES (%s, %s, %s, %s, %s, %s)"
+        )
+        word_list = transcript.split()
+        number_of_words = len(word_list)
+        number_of_hesitations = transcript.count('%HESITATION')
+        data = (speech_id, file_name, transcript, number_of_words, number_of_hesitations, (100 - ((number_of_hesitations / number_of_words) * 100)))
+        cursor.execute(insert_stmt, data)
+        cnx.commit()
+
+        speech_id += 1
+        file_name = ""
+
+
+    return render_template('speech_to_text.html')
+
+@app.route('/file_upload', methods=['POST', 'GET'])
+@login_required
+def file_upload():
+
+    global speech_id
+    global file_name
+
+    if request.method == 'POST':
+        data = request.get_data()
+        data = json.loads(data)
+        file_name = data["file_name"]
+        transcript = data["transcript"]
+        method = data["method"]
+        print("File name:", file_name)
+        print("Transcript:", transcript)
+        print("Method:", method)
+
+
+        cnx = connect_to_db(sql_hostname, sql_port)
+        cursor = cnx.cursor()
+
+        insert_stmt = (
+            "INSERT INTO speech(speech_id, file_name, transcript, total_number_of_words, total_number_of_hesitations, accuracy)"
+            "VALUES (%s, %s, %s, %s, %s, %s)"
+        )
+        word_list = transcript.split()
+        number_of_words = len(word_list)
+        number_of_hesitations = transcript.count('%HESITATION')
+        data = (speech_id, file_name, transcript, number_of_words, number_of_hesitations, (100 - ((number_of_hesitations / number_of_words) * 100)))
+        cursor.execute(insert_stmt, data)
+        cnx.commit()
+
+        speech_id += 1
+        file_name = ""
+
+
 
     return render_template('file_upload.html')
 
