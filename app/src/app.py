@@ -183,7 +183,27 @@ def record():
 
     return render_template('base.html', record = display_transcript)
 
+@app.route("/analytics", methods=["GET", "POST"])
+def analytics():
+    
+    total_number_of_words= ""
+    total_number_of_hesitations= ""
 
+    cnx = connect_to_db(sql_hostname, sql_port)
+    cursor = cnx.cursor()
+    query = (
+        "SELECT total_number_of_words, total_number_of_hesitations, accuracy FROM speech "
+        "WHERE speech_id=1"
+    )
+    cursor.execute(query)
+    t = cursor.fetchall()
+    result = t[0]
+    total_number_of_words = result[0]
+    total_number_of_hesitations = result[1]
+    accuracy = result[2]
+
+
+    return render_template('analytics.html',test = t, total_number_of_words=total_number_of_words, total_number_of_hesitations=total_number_of_hesitations, accuracy = accuracy)
 
 
 
