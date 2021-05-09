@@ -215,3 +215,33 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+@app.route("/analytics", methods=["GET", "POST"])
+def analytics():
+    
+    total_number_of_words= ""
+    total_number_of_hesitations= ""
+
+    cnx = connect_to_db(sql_hostname, sql_port)
+    cursor = cnx.cursor()
+    # query = (
+    #     "SELECT total_number_of_words, total_number_of_hesitations, accuracy FROM speech "
+    #     "ORDER by speech_id desc"
+    # )
+    # cursor.execute(query)
+    # t = cursor.fetchall()
+    # result = t[0]
+    # total_number_of_words = result[0]
+    # total_number_of_hesitations = result[1]
+    # accuracy = result[2]
+
+
+    # return render_template('analytics.html',test = t, total_number_of_words=total_number_of_words, total_number_of_hesitations=total_number_of_hesitations, accuracy=accuracy)
+
+    query = (
+        "SELECT file_name, transcript, total_number_of_words, total_number_of_hesitations, accuracy FROM speech "
+        "ORDER by speech_id desc"
+    )
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    return render_template('analytics.html', rows=rows)
