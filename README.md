@@ -10,9 +10,12 @@ Installation
 Requirements:
 * Windows 10, Mac OS, or Linux 
 * Python 3
+    - https://www.python.org/downloads/
 * Docker 
+    - https://docs.docker.com/get-docker/
 
 Install using:
+(Assuming you already have Docker and Python 3 installed)
 
     $ cd speech-assistant-analyzer
     $ make start 
