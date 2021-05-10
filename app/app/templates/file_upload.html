@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section>
+    <h3><center>Upload an audio file</center></h3>
+    <p><small><i><center>
+      Supported audio file types include .wav, .mp3, .ogg, .opus, .flac, and .webm.
+    </center></i></small></p>
+    <div class="container-md">
+      <!-- <label for="formFile" class="form-label">Upload sound file</label> -->
+      <input class="form-control" type="file" id="audiofile"> 
+      <button class="btn btn-primary" id="button">Transcribe and play</button> 
+      <button class="btn btn-outline-danger" id="stop">Stop</button>
+      <button class="btn btn-outline-warning" onclick="hesitation_markers()">Show filler words</button>
+    </div>
+
+
+    <!-- <h2>Output:</h2> -->
+    <center><samp id="output"></samp></center>
+</section>
+
+<pre><code><script>
+  
+var stream;
+document.querySelector('#button').onclick = function () {
+
+  fetch("{{ url_for('token') }} ").then(function(response) {
+    return response.json();
+  }).then(function (token) {
+
+    stream = WatsonSpeech.SpeechToText.recognizeFile(Object.assign(token, {
+      file: document.querySelector('#audiofile').files[0],
+      play: true, // play the audio out loud
+      outputElement: '#output', // CSS selector or DOM Element (optional)
+      format: false // Turn off smart_formatting for Hesitation marker
+    }));
+
+    stream.on('error', function(err) {
+        console.log(err);
+    });
+
+  }).catch(function(error) {
+      console.log(error);
+  });
+};
+
+document.querySelector('#stop').onclick = function() {
+    if (stream) {
+        stream.stop();
+
+        let text = document.getElementById("output").innerHTML;
+        var file_name = document.getElementById("audiofile").value.replace(/^.*\\/, "");
+        var transcript = text;
+        var method = "Upload";
+
+        $.ajax({
+          type: "POST",
+          url : "/file_upload",
+          traditional: "true",
+          dataType: "json",
+          data: JSON.stringify({file_name, transcript, method})
+        });
+    }
+
+};
+
+function hesitation_markers() {
+        
+  let text = document.getElementById("output").innerHTML;
+  let newText = text.replaceAll("%HESITATION", "<mark>%HESITATION</mark>");
+  document.getElementById("output").innerHTML = newText;
+
+}
+
+
+
+
+</script></code></pre>
+
+<style type="text/css">
+
+  .highlight {
+    background-color: yellow;
+  }
+
+  mark { 
+    background-color: yellow;
+    color: black;
+  }
+
+  .container-md {
+    text-align: center;
+  }
+
+</style>
+{% endblock %}

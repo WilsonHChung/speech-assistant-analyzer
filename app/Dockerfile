@@ -13,7 +13,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # copy the content of the local src directory to the working directory
-COPY src/ .
+COPY / .
 
 # setup command to run the flask script whenever the container is running 
 CMD ["flask", "run", "--host", "0.0.0.0"]

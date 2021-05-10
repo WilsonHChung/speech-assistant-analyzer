@@ -25,4 +25,3 @@ CREATE TABLE speech_to_text (
   hesitation_id int
 );
 
-
