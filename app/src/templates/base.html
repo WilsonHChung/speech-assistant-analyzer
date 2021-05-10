@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Speech Assistant Analyzer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	     <span class="navbar-toggler-icon"></span>
+	 </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
+             <ul class="navbar-nav">
+	         <li class="nav-item active">
+                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+		</li>
+		<li class="nav-item">
+		    <a class="nav-link" href="analytics">Analytics</a>
+		</li>
+		<li class="nav-item">
+		    <a class="nav-link" href="#">Guide</a>
+		</li>
+        </ul>
+        </div>
+    </nav>
+    <div id="speechContainer">
+ 
+        {% if record != " " %}
+
+
+        <div id="speechTranscriptContainer">
+            <h2><b><center><p id="text">{{record}}</p></center></b></h2>
+        </div>
+
+        
+        <button onclick="hesitation_markers()">Show filler words</button>
+
+        <p style="width:400px;"></p>
+        
+        <!-- <h4> Audio file upload </h4>  -->
+        
+
+        <!-- <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Upload an audio file here</label>
+        </div> -->
+
+
+        <html>
+        <body>
+            <form action = "http://localhost:5000" method = "POST" enctype = "multipart/form-data">
+                <input type = "file" name = "file" />
+                <input type = "submit" value = "Submit" />
+            </form>
+        </body>
+        </html>
+  
+        
+
+        {% endif %}
+    
+    </div>
+
+    
+    {% block content %}
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+
+<style type="text/css">
+
+    .highlight {
+        background-color: yellow;
+    }
+
+    mark { 
+        background-color: yellow;
+        color: black;
+    }
+
+    h2 {
+        font-size: 20px;
+        padding-bottom: 200px;
+        line-height: 2;
+    }
+
+</style>
+
+<script type="text/javascript">
+
+    function hesitation_markers() {
+        
+        let text = document.getElementById("text").innerHTML;
+        let newText = text.replaceAll("%HESITATION", "<mark>%HESITATION</mark>");
+        document.getElementById("text").innerHTML = newText;
+    }
+
+    // function undo_hesitation_markers() {
+
+    // }
+
+
+    // when the browse and submit button is clicked then attempt to send back data to flask
+    // $('#exampleFakeBrowseFile1, #exampleFakeFile1').on('click', function() {
+    //   $('#exampleFile1').trigger("click");
+    // //   $.ajax({
+    // //             type: "POST",
+    // //             url : "/",
+    // //             traditional: "true",
+    // //             dataType: "json",
+    // //             data: JSON.stringify({file_name, toggle})
+
+    // //         });
+    // });
+    // $('#exampleFile1').change(function() {
+    //     var file_name = this.value.replace(/\\/g, '/').replace(/.*\//, '');
+        
+    //     var toggle = "file";
+    //     $('#exampleFakeFile1').val(file_name);
+
+    // });
+
+    // $(function() {
+    //     $('#upload-file-btn').click(function() {
+    //         var form_data = new FormData($('#upload-file')[0]);
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: '/',
+    //             data: form_data,
+    //             contentType: false,
+    //             cache: false,
+    //             processData: false,
+    //             success: function(data) {
+    //                 console.log('Success!');
+    //             },
+    //         });
+    //     });
+    // });
+
+    // $(function() {
+    //     $('#submit').click(function() {
+    //         location.reload()
+    //         $("#text").text("XDXDXD");
+    //         // $.ajax({
+    //         //     type: 'POST',
+    //         //     url: '/',
+    //         //     data: form_data,
+    //         //     contentType: false,
+    //         //     cache: false,
+    //         //     processData: false,
+    //         //     success: function(data) {
+    //         //         console.log('Success!');
+    //         //     },
+    //         // });
+    //     });
+    // });
+
+
+    // $.ajax({
+    //             type: "POST",
+    //             url : "/?exampleFile1=hesitation.wav",
+    //             traditional: "true",
+    //             dataType: "json",
+    //             data: JSON.stringify({file_name, toggle})
+
+    //         });
+
+
+</script>
