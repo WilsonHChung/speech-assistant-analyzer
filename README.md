@@ -9,18 +9,18 @@ Installation
 
 Requirements:
 * Windows 10, Mac OS, or Linux 
-* Python 3
-    - https://www.python.org/downloads/
 * Docker 
     - https://docs.docker.com/get-docker/
 
-Install using:
-(Assuming you already have Docker and Python 3 installed)
+After installing Docker using the link above, install the project:
 
+    $ git clone https://github.com/WilsonHChung/speech-assistant-analyzer.git
     $ cd speech-assistant-analyzer
-    $ make start 
+    $ make start
+    
+Once installation is completed, enter the following in your browser to use the app:
 
-
+    $ localhost:5000
 
 Usage
 ---------------
